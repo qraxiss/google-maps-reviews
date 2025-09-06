@@ -1,0 +1,35 @@
+{
+  "name": "MRE",
+  "description": "MRE",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "index.html"
+  },
+  "permissions": [
+    "tabs",
+    "<all_urls>",
+    "contextMenus",
+    "webRequest",
+    "webRequestBlocking",
+    "webNavigation",
+    "storage",
+    "unlimitedStorage",
+    "notifications",
+    "idle",
+    "alarms"
+  ],
+  "optional_permissions": ["management"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "all_frames": true,
+      "matches": ["http://*/*", "https://*/*"],
+      "run_at": "document_start",
+      "js": ["content.js"]
+    }
+  ]
+}
