@@ -1,5 +1,5 @@
 {
   "ext": "js,html",
-  "exec": "node index.js",
+  "exec": "yarn start:server",
   "ignore": ["extension"]
 }

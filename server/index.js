@@ -1,9 +1,6 @@
 import http from 'http'
-import { requestListener } from './api.js'
-import { onUpgrade } from'./socket.js'
-
-// const { requestListener } = require('./api.js')
-// const { onUpgrade } = require('./socket.js')
+import { requestListener } from './routes.js'
+import { onUpgrade } from'./websocket.js'
 
 const host = 'localhost';
 const port = 8000;
