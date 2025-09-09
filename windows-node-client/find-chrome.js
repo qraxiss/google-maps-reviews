@@ -1,25 +1,12 @@
 import fs from 'fs';
 import { execSync } from 'child_process';
 
-function findChrome() {
+export function findChromePath() {
     try {
         const result = execSync('where chrome.exe').toString();
         const path = result.split('\n')[0].trim();
         if (path && fs.existsSync(path)) {
             return path;
-        }
-    } catch (e) { }
-
-    try {
-        const cmd = 'reg query "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\chrome.exe" /ve';
-        const result = execSync(cmd).toString().trim().split('\n');
-        const valueLine = result[result.length - 1].trim();
-        const parts = valueLine.split('    ');
-        if (parts.length >= 2) {
-            const path = parts[1].trim().replace(/^"(.+)"$/, '$1');
-            if (fs.existsSync(path)) {
-                return path;
-            }
         }
     } catch (e) { }
 
@@ -35,5 +22,3 @@ function findChrome() {
 
     return null;
 }
-
-console.log(findChrome());

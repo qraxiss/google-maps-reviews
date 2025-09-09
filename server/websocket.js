@@ -1,6 +1,9 @@
 import crypto from 'crypto'
+import url from 'url'
+import { randomChar } from './random-char.js';
 
-export const sockets = []
+export const windowsNodeSockets = []
+export const browserClientSockets = []
 
 export function socketHandler(req, socket) {
     if (req.headers["upgrade"] !== "websocket") {
@@ -9,7 +12,6 @@ export function socketHandler(req, socket) {
     }
 
     const acceptKey = req.headers["sec-websocket-key"];
-    console.log(acceptKey)
     const hash = crypto
         .createHash("sha1")
         .update(acceptKey + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11")
@@ -22,9 +24,29 @@ export function socketHandler(req, socket) {
         `Sec-WebSocket-Accept: ${hash}`
     ];
 
-    sockets.push(socket)
-
     socket.write(responseHeaders.join("\r\n") + "\r\n\r\n");
+
+    const parsedUrl = url.parse(req.url, true);
+    const pathname = parsedUrl.pathname;
+
+    switch (pathname) {
+        case '/windows-node':
+            windowsNodeSockets.push(socket)
+            sendMessageToSocket(socket, randomChar())
+
+            break;
+
+        case '/browser-extension':
+            browserClientSockets.push(socket)
+            break;
+
+        default:
+            break;
+    }
+
+    console.log(`[new-socket][${pathname}]`)
+
+
 }
 
 export function parseSocketMessage(socket, buffer) {
@@ -72,7 +94,7 @@ export function onUpgrade(req, socket) {
     socket.on("data", (buffer) => {
         const message = parseSocketMessage(socket, buffer)
 
-        console.log(message)
+        console.log(`[socket-message][${message}]`)
 
         switch (message) {
             case 'url':
