@@ -1,5 +1,6 @@
 import crypto from 'crypto'
 
+export const sockets = []
 
 export function socketHandler(req, socket) {
     if (req.headers["upgrade"] !== "websocket") {
@@ -20,6 +21,8 @@ export function socketHandler(req, socket) {
         "Connection: Upgrade",
         `Sec-WebSocket-Accept: ${hash}`
     ];
+
+    sockets.push(socket)
 
     socket.write(responseHeaders.join("\r\n") + "\r\n\r\n");
 }

@@ -7,8 +7,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start:server": "node server/index.js",
-    "dev:server": "nodemon"
+    "start:server": "cd server && node index.js",
+    "dev:server": "nodemon --config nodemon.server.json"
   },
   "devDependencies": {
     "nodemon": "3.1.10"

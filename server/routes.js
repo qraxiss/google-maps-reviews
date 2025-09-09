@@ -1,9 +1,12 @@
 import fs from 'fs'
 import url from 'url'
+import { sendMessageToSocket, sockets } from './websocket.js'
 
-const indexHTML = fs.readFileSync('./admin-panel/index.html')
-const indexCSS = fs.readFileSync('./admin-panel/index.css')
-const indexJS = fs.readFileSync('./admin-panel/index.js')
+const indexHTML = fs.readFileSync('../admin-panel/index.html')
+const indexCSS = fs.readFileSync('../admin-panel/index.css')
+const indexJS = fs.readFileSync('../admin-panel/index.js')
+
+
 
 export function requestListener(req, res) {
     const parsedUrl = url.parse(req.url, true);
@@ -12,6 +15,18 @@ export function requestListener(req, res) {
     switch (req.method) {
         case 'POST':
             res.setHeader("Content-Type", "application/json");
+
+            switch (pathname) {
+                case '/comment':
+                    sockets.forEach(socket => {
+                        sendMessageToSocket(socket, 'comment')
+                    })
+                    break;
+
+                default:
+                    break;
+            }
+
             break;
 
         case 'GET':

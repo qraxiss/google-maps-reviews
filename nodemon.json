@@ -1,5 +1,0 @@
-{
-  "ext": "js,html",
-  "exec": "yarn start:server",
-  "ignore": ["extension"]
-}

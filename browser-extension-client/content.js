@@ -13,8 +13,18 @@ function connect() {
 
     socket.onmessage = (event) => {
         console.log("event", event.data);
-        if (event.data === 'get_url') {
-            socket.send(window.location.href);
+
+        switch (event.data) {
+            case 'get_url':
+                socket.send(window.location.href);
+                break;
+
+            case 'comment':
+                writeComment('test command').catch(console.error)
+                break;
+
+            default:
+                break;
         }
     };
 

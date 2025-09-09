@@ -6,6 +6,7 @@
   "action": {
     "default_popup": "index.html"
   },
+  "type": "module",
   "permissions": [
     "tabs",
     "<all_urls>",
@@ -29,7 +30,7 @@
       "all_frames": true,
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_start",
-      "js": ["content.js"]
+      "js": ["comment.js", "content.js"]
     }
   ]
 }

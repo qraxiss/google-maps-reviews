@@ -1,0 +1,5 @@
+{
+  "ext": "js,html",
+  "exec": "yarn start:server",
+  "ignore": ["browser-extension-client", "windows-node-client"]
+}
