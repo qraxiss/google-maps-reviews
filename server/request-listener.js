@@ -1,16 +1,20 @@
-import url from 'url'
 import { serveStatic } from './serve-static.js'
 import { api } from './api.js';
 
 export function requestListener(req, res) {
-    const parsedUrl = url.parse(req.url, true);
-    const pathname = parsedUrl.pathname;
-
     switch (req.method) {
         case 'POST':
-            return api(pathname, res)
+            let body = "";
+            req.on("data", chunk => {
+                body += chunk.toString();
+            });
+
+            return req.on("end", () => {
+                req.body = body
+                return api(req, res)
+            })
 
         case 'GET':
-            return serveStatic(pathname, res)
+            return serveStatic(req, res)
     }
 };

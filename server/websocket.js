@@ -1,9 +1,7 @@
 import crypto from 'crypto'
-import url from 'url'
-import { randomChar } from './random-char.js';
 
-export const windowsNodeSockets = []
-export const browserClientSockets = []
+export const windowsNodeSockets = {}
+export const browserClientSockets = {}
 
 export function socketHandler(req, socket) {
     if (req.headers["upgrade"] !== "websocket") {
@@ -26,27 +24,22 @@ export function socketHandler(req, socket) {
 
     socket.write(responseHeaders.join("\r\n") + "\r\n\r\n");
 
-    const parsedUrl = url.parse(req.url, true);
-    const pathname = parsedUrl.pathname;
+    const [, pathname, id] = req.url.split('/')
 
     switch (pathname) {
-        case '/windows-node':
-            windowsNodeSockets.push(socket)
-            sendMessageToSocket(socket, randomChar())
-
+        case 'windows-node':
+            windowsNodeSockets[id] = socket
             break;
 
-        case '/browser-extension':
-            browserClientSockets.push(socket)
+        case 'browser-extension':
+            browserClientSockets[id] = socket
             break;
 
         default:
             break;
     }
 
-    console.log(`[new-socket][${pathname}]`)
-
-
+    console.log(`[new-socket][${pathname}][${id}]`)
 }
 
 export function parseSocketMessage(socket, buffer) {
@@ -81,12 +74,27 @@ export function parseSocketMessage(socket, buffer) {
 }
 
 export function sendMessageToSocket(socket, message) {
-    const reply = Buffer.from(message);
-    const header = Buffer.alloc(2);
-    header[0] = 0x81;
-    header[1] = reply.length;
-    const responseFrame = Buffer.concat([header, reply]);
-    socket.write(responseFrame);
+    const payload = Buffer.from(message);
+    let header;
+
+    if (payload.length <= 125) {
+        header = Buffer.alloc(2);
+        header[0] = 0x81; 
+        header[1] = payload.length;
+    } else if (payload.length <= 0xffff) {
+        header = Buffer.alloc(4);
+        header[0] = 0x81;
+        header[1] = 126;
+        header.writeUInt16BE(payload.length, 2);
+    } else {
+        header = Buffer.alloc(10);
+        header[0] = 0x81;
+        header[1] = 127;
+        header.writeBigUInt64BE(BigInt(payload.length), 2);
+    }
+
+    const frame = Buffer.concat([header, payload]);
+    socket.write(frame);
 }
 
 export function onUpgrade(req, socket) {

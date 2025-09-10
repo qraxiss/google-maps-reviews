@@ -1,6 +1,6 @@
 let socket;
 const RECONNECT_DELAY = 1000;
-const URL = "ws://localhost:8000"
+const URL = `ws://localhost:8000/browser-client/${NODE_ID}`
 
 function connect() {
     console.log("trying to connect websocket");

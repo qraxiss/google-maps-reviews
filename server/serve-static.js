@@ -1,10 +1,13 @@
-import fs from 'fs'
+import {readFileSync} from 'fs'
 
-const indexHTML = fs.readFileSync('../admin-panel/index.html')
-const indexCSS = fs.readFileSync('../admin-panel/index.css')
-const indexJS = fs.readFileSync('../admin-panel/index.js')
+const indexHTML = readFileSync('../admin-panel/index.html')
+const indexCSS = readFileSync('../admin-panel/index.css')
+const indexJS = readFileSync('../admin-panel/index.js')
 
-export function serveStatic(pathname, res) {
+export function serveStatic(req, res) {
+    const parsedUrl = url.parse(req.url, true);
+    const pathname = parsedUrl.pathname;
+
     switch (pathname) {
         case '/':
             return res.end(indexHTML)

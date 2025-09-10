@@ -1,5 +1,7 @@
 import { randomUUID } from "crypto";
-import { spawnChrome } from "./spawn-chrome.js";
+
+import chrome from './chrome.js'
+
 import { readFileSync, writeFileSync, existsSync } from 'fs'
 
 let socket;
@@ -11,8 +13,8 @@ if (!existsSync('id.json')) {
     writeFileSync('id.json', JSON.stringify(id))
 }
 
-const id = readFileSync('id.json').toString()
-const url = URL(JSON.parse(id))
+const id = JSON.parse(readFileSync('id.json').toString())
+const url = URL(id)
 
 // const URL = "wss://c96db2083337.ngrok-free.app"
 
@@ -25,7 +27,29 @@ function connect() {
     };
 
     socket.onmessage = (event) => {
-        // spawnChrome('Default', 'https://google.com/maps')
+        console.log(event.data)
+        const data = JSON.parse(event.data)
+
+        switch (data.operation) {
+            case 'spawn-chrome':
+                const ID_JS =
+                    `console.log('${id}')
+window.NODE_ID = '${id}'`
+
+                writeFileSync('../browser-extension-client/id.js', ID_JS)
+
+                chrome.kill()
+                chrome.spawn(data.profile, data.link)
+
+
+                // setTimeout(chrome.kill, 10000)
+
+                break;
+
+            default:
+                break;
+        }
+
         console.log(event.data)
     };
 

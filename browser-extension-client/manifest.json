@@ -30,7 +30,7 @@
       "all_frames": true,
       "matches": ["http://*/*", "https://*/*"],
       "run_at": "document_start",
-      "js": ["comment.js", "content.js"]
+      "js": ["id.js", "comment.js", "content.js"]
     }
   ]
 }
