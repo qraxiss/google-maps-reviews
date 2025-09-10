@@ -4,7 +4,7 @@ import { join } from 'path'
 
 function spawn(profile, link) {
     const chromeArgs = [
-        `--profile-directory="${profile}"`,
+        // `--profile-directory="${profile}"`,
         "--disable-features=DisableLoadExtensionCommandLineSwitch",
         `--load-extension=${join(import.meta.dirname, '..', 'browser-extension-client')}`,
         '--window-size=1920,1080',
