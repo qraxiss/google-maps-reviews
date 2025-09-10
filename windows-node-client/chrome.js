@@ -44,7 +44,7 @@ function spawn(profile, link) {
 function kill() {
     switch (process.platform) {
         case 'win32':
-
+            exec('taskkill /F /IM chrome.exe /T')
             break;
 
         case 'darwin':
