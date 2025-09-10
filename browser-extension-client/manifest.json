@@ -28,7 +28,7 @@
   "content_scripts": [
     {
       "all_frames": true,
-      "matches": ["http://*/*", "https://*/*"],
+      "matches": ["https://www.google.com/maps/place/*"],
       "run_at": "document_start",
       "js": ["id.js", "comment.js", "content.js"]
     }

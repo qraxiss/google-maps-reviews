@@ -1,26 +1,26 @@
 let socket;
 const RECONNECT_DELAY = 1000;
-const URL = `ws://localhost:8000/browser-client/${NODE_ID}`
+
+// const URL = 'wss://8cc48cead88b.ngrok-free.app'
+const URL = 'ws://localhost:8000'
+const ID_URL = (id) => `${URL}/browser-extension/${id}`
 
 function connect() {
     console.log("trying to connect websocket");
-    socket = new WebSocket(URL);
+    socket = new WebSocket(ID_URL(NODE_ID));
 
     socket.onopen = () => {
         console.log("websocket connected");
-        socket.send('url');
     };
 
     socket.onmessage = (event) => {
         console.log("event", event.data);
 
-        switch (event.data) {
-            case 'get_url':
-                socket.send(window.location.href);
-                break;
+        const data = JSON.parse(event.data)
 
+        switch (data.operation) {
             case 'comment':
-                writeComment('test command').catch(console.error)
+                writeComment(data.comment)
                 break;
 
             default:

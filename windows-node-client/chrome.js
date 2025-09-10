@@ -2,18 +2,21 @@ import fs from 'fs';
 import { exec, execSync, spawn as spawnProcess } from 'child_process';
 
 function spawn(profile, link) {
+    const chromeArgs = [
+        `--profile-directory="${profile}"`,
+        "--disable-features=DisableLoadExtensionCommandLineSwitch",
+        '--load-extension=/Users/qraxisslemonhaze/Documents/GitHub/google-maps-reviews/browser-extension-client',
+        '--window-size=1920,1080',
+        '--window-position=100,100',
+        link
+    ]
+
+
     switch (process.platform) {
         case 'win32':
             {
                 const path = findPath()
-
-                const chrome = spawnProcess(path, [
-                    `--profile-directory="${profile}"`,
-                    "--disable-features=DisableLoadExtensionCommandLineSwitch",
-                    '--load-extension=/Users/qraxisslemonhaze/Documents/GitHub/google-maps-reviews/browser-extension-client',
-                    link
-                ]);
-
+                const chrome = spawnProcess(path, chromeArgs);
                 return chrome
             }
 
@@ -23,10 +26,7 @@ function spawn(profile, link) {
                     "-na",
                     "Google Chrome",
                     "--args",
-                    `--profile-directory="${profile}"`,
-                    "--disable-features=DisableLoadExtensionCommandLineSwitch",
-                    '--load-extension=/Users/qraxisslemonhaze/Documents/GitHub/google-maps-reviews/browser-extension-client',
-                    link
+                    ...chromeArgs
                 ]);
 
                 return chrome

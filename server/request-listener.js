@@ -4,6 +4,8 @@ import { api } from './api.js';
 export function requestListener(req, res) {
     switch (req.method) {
         case 'POST':
+            res.setHeader("Content-Type", "application/json");
+
             let body = "";
             req.on("data", chunk => {
                 body += chunk.toString();

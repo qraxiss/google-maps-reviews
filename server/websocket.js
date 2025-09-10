@@ -105,10 +105,6 @@ export function onUpgrade(req, socket) {
         console.log(`[socket-message][${message}]`)
 
         switch (message) {
-            case 'url':
-                sendMessageToSocket(socket, 'get_url')
-                break;
-
             default:
                 break;
         }

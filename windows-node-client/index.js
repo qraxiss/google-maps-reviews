@@ -6,7 +6,9 @@ import { readFileSync, writeFileSync, existsSync } from 'fs'
 
 let socket;
 const RECONNECT_DELAY = 1000;
-const URL = (id) => `ws://localhost:8000/windows-node/${id}`
+// const URL = 'wss://8cc48cead88b.ngrok-free.app'
+const URL = 'ws://localhost:8000'
+const ID_URL = (id) => `${URL}/windows-node/${id}`
 
 if (!existsSync('id.json')) {
     const id = randomUUID()
@@ -14,9 +16,7 @@ if (!existsSync('id.json')) {
 }
 
 const id = JSON.parse(readFileSync('id.json').toString())
-const url = URL(id)
-
-// const URL = "wss://c96db2083337.ngrok-free.app"
+const url = ID_URL(id)
 
 function connect() {
     console.log("trying to connect websocket");
