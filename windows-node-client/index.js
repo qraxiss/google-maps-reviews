@@ -32,9 +32,7 @@ function connect() {
 
         switch (data.operation) {
             case 'spawn-chrome':
-                const ID_JS =
-                    `console.log('${id}')
-window.NODE_ID = '${id}'`
+                const ID_JS =`window.NODE_ID = '${id}'`
 
                 writeFileSync('../browser-extension-client/id.js', ID_JS)
 
