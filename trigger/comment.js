@@ -1,5 +1,4 @@
-
-fetch('http://localhost:8000/comment/b3c6110a-5ddc-4ed4-8ea4-f8b3ab04fcce',
+fetch('http://localhost:8000/comment/0053fc9b-36fa-4f65-8ff7-d419d2a5a899',
     {
         method: 'POST',
         body: JSON.stringify({
