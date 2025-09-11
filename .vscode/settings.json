@@ -1,5 +1,8 @@
 {
     "workbench.preferredDarkColorTheme": "GitHub Dark",
     "workbench.preferredLightColorTheme": "GitHub Light",
-    "window.autoDetectColorScheme": true
+    "window.autoDetectColorScheme": true,
+    "files.associations": {
+        "stdlib.h": "c"
+    }
 }

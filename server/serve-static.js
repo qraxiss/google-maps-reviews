@@ -1,4 +1,4 @@
-import {readFileSync} from 'fs'
+import { readFileSync } from 'fs'
 
 const indexHTML = readFileSync('../admin-panel/index.html')
 const indexCSS = readFileSync('../admin-panel/index.css')

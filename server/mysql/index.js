@@ -38,7 +38,7 @@ export function createClient(config) {
     }
 
     function handleResultHeader(payload) {
-        if (!current) return; 
+        if (!current) return;
         const offset = { pos: 0 };
         const header = readLengthCodedNumber(payload, offset);
 
@@ -288,6 +288,7 @@ export function createPool(poolConfig) {
 
     return {
         async query(sql) {
+            console.log(sql)
             if (!initialized) { await ensureMin(); initialized = true; }
             const conn = await acquire();
             busy.add(conn);
@@ -330,14 +331,7 @@ export function createPool(poolConfig) {
 }
 
 
-export const pool = createPool({
-    host: process.env.MYSQL_HOST,
-    port: process.env.MYSQL_PORT,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    max: 10
-})
+// pool.query('SELECT 1+1').then(console.log).then(pool.end)
 
-pool.query('SELECT 1+1').then(console.log).then(pool.end)
+// pool.query('SELECT 1+1').then(console.log).then(pool.end)
 
