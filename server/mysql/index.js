@@ -38,7 +38,7 @@ export function createClient(config) {
     }
 
     function handleResultHeader(payload) {
-        if (!current) return; // safety
+        if (!current) return; 
         const offset = { pos: 0 };
         const header = readLengthCodedNumber(payload, offset);
 
@@ -226,8 +226,6 @@ export function createClient(config) {
                 client.connect(config.port, config.host);
             });
         },
-        // Queries on the same connection are serialized.
-        // Use createPool for parallel queries.
         query(sql) {
             return new Promise((resolve, reject) => {
                 queue.push({ sql, resolve, reject });

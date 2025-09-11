@@ -1,9 +1,12 @@
 import http from 'http'
 import { requestListener } from './request-listener.js'
 import { onUpgrade } from'./websocket.js'
+import { loadEnv } from './env.js';
 
-const host = 'localhost';
-const port = 8000;
+loadEnv()
+
+const host = process.env.APP_HOST;
+const port = process.env.APP_PORT;
 
 const server = http.createServer(requestListener);
 
