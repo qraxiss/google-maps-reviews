@@ -7,7 +7,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "start:server": "cd server && node index.js",
+    "start:server": "cd server && ts-node index.js",
     "dev:server": "nodemon --config nodemon.server.json",
     "start:windows": "cd windows-node-client && node index.js",
     "dev:windows": "nodemon --config nodemon.windows.json",

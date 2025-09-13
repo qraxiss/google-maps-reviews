@@ -1,5 +1,5 @@
 {
-  "ext": "js,html,env,sql",
+  "ext": "js,html,ts",
   "exec": "yarn start:server",
   "ignore": ["browser-extension-client", "windows-node-client"]
 }

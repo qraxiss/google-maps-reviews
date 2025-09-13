@@ -1,9 +1,12 @@
 import http from 'http'
 import { requestListener } from './request-listener.js'
 import { onUpgrade } from './websocket.js'
+import { database } from './database/index.ts'
 
-const host = 8000;
-const port = 'localhost';
+console.log(database)
+
+const host = 'localhost';
+const port = 8000;
 
 const server = http.createServer(requestListener);
 

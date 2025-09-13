@@ -24,6 +24,12 @@ function connect() {
 
     socket.onopen = () => {
         console.log("websocket connected");
+
+        socket.send(JSON.stringify({
+            'operation': 'profiles',
+            profiles: ['Test', 'Test 2']
+        }))
+
     };
 
     socket.onmessage = (event) => {

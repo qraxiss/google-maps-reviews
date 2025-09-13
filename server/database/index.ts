@@ -6,7 +6,7 @@ const schema = {
   devices: [],
 };
 
-let database: schema;
+export let database: schema;
 if (!existsSync(databasePath)) {
   writeFileSync(databasePath, JSON.stringify(schema));
   database = schema;
@@ -14,19 +14,31 @@ if (!existsSync(databasePath)) {
   database = JSON.parse(readFileSync(databasePath).toString());
 }
 
-setInterval(() => writeFileSync(databasePath, JSON.stringify(database)), 1000);
+setInterval(() => {
+  writeFileSync(databasePath, JSON.stringify(database));
+}, 1000);
 
-export function newDevice(ID: string, profiles: profile[]) {
+export function newDevice(ID: string) {
+  const device = database.devices.find((device) => device.ID === ID);
+
+  if (device) {
+    return;
+  }
+
+  database.devices.push({
+    ID,
+    profiles: [],
+  });
+}
+
+export function updateProfiles(ID: string, profiles: profile[]) {
   const device = database.devices.find((device) => device.ID === ID);
 
   if (!device) {
     return;
   }
 
-  database.devices.push({
-    ID,
-    profiles,
-  });
+  device.profiles = profiles;
 }
 
 type device = {

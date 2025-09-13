@@ -1,4 +1,5 @@
 import crypto from 'crypto'
+import { newDevice, updateProfiles } from './database/index.ts';
 
 export const windowsNodeSockets = {}
 export const browserClientSockets = {}
@@ -29,6 +30,20 @@ export function socketHandler(req, socket) {
     switch (pathname) {
         case 'windows-node':
             windowsNodeSockets[id] = socket
+
+            socket.on("data", (buffer) => {
+                const data = JSON.parse(parseSocketMessage(socket, buffer))
+
+                switch (data.operation) {
+                    case 'profiles':
+                        updateProfiles(id, data.profiles)
+
+                    default:
+                        break;
+                }
+            });
+
+            newDevice(id)
             break;
 
         case 'browser-extension':
@@ -79,7 +94,7 @@ export function sendMessageToSocket(socket, message) {
 
     if (payload.length <= 125) {
         header = Buffer.alloc(2);
-        header[0] = 0x81; 
+        header[0] = 0x81;
         header[1] = payload.length;
     } else if (payload.length <= 0xffff) {
         header = Buffer.alloc(4);
@@ -99,14 +114,4 @@ export function sendMessageToSocket(socket, message) {
 
 export function onUpgrade(req, socket) {
     socketHandler(req, socket)
-    socket.on("data", (buffer) => {
-        const message = parseSocketMessage(socket, buffer)
-
-        console.log(`[socket-message][${message}]`)
-
-        switch (message) {
-            default:
-                break;
-        }
-    });
 }
