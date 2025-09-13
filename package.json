@@ -10,10 +10,11 @@
     "start:server": "cd server && node index.js",
     "dev:server": "nodemon --config nodemon.server.json",
     "start:windows": "cd windows-node-client && node index.js",
-    "dev:windows": "nodemon --config nodemon.windows.json"
-
+    "dev:windows": "nodemon --config nodemon.windows.json",
+    "build:server": "cd server && tsc"
   },
   "devDependencies": {
-    "nodemon": "3.1.10"
+    "nodemon": "3.1.10",
+    "typescript": "^5.9.2"
   }
 }
